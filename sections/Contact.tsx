@@ -19,10 +19,12 @@ export default function Contact() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value, type, checked } = e.target;
+    const target = e.target as HTMLInputElement | HTMLTextAreaElement;
+    const { name, value, type } = target;
+
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === "checkbox" ? (target as HTMLInputElement).checked : value,
     }));
   };
 
@@ -44,11 +46,9 @@ export default function Contact() {
     if (!validate()) return;
 
     try {
-      const res = await fetch("https://formspree.io/f/mwpbjela}", {
+      const res = await fetch("https://formspree.io/f/mwpbjela", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
@@ -89,39 +89,12 @@ export default function Contact() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
         >
-          {/* Name */}
-          <InputField
-            label="Full Name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            error={errors.name}
-          />
-
-          {/* Phone */}
-          <InputField
-            label="Phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            error={errors.phone}
-          />
-
-          {/* Email */}
-          <InputField
-            label="Email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            error={errors.email}
-            type="email"
-          />
-
-          {/* Message */}
+          <InputField label="Full Name" name="name" value={formData.name} onChange={handleChange} error={errors.name} />
+          <InputField label="Phone" name="phone" value={formData.phone} onChange={handleChange} error={errors.phone} />
+          <InputField label="Email" name="email" value={formData.email} onChange={handleChange} error={errors.email} type="email" />
+          
           <div>
-            <label className="block mb-2 font-medium text-gray-700">
-              What brings you here?
-            </label>
+            <label className="block mb-2 font-medium text-gray-700">What brings you here?</label>
             <textarea
               name="message"
               rows={4}
@@ -132,16 +105,8 @@ export default function Contact() {
             {errors.message && <ErrorText text={errors.message} />}
           </div>
 
-          {/* Time */}
-          <InputField
-            label="Preferred time to reach you"
-            name="time"
-            value={formData.time}
-            onChange={handleChange}
-            error={errors.time}
-          />
+          <InputField label="Preferred time to reach you" name="time" value={formData.time} onChange={handleChange} error={errors.time} />
 
-          {/* Agree */}
           <div className="flex items-start">
             <input
               type="checkbox"
@@ -150,9 +115,7 @@ export default function Contact() {
               onChange={handleChange}
               className="mr-2 mt-1"
             />
-            <label className="text-gray-700 text-sm">
-              I agree to be contacted by Dr. Serena Blake
-            </label>
+            <label className="text-gray-700 text-sm">I agree to be contacted by Dr. Serena Blake</label>
           </div>
           {errors.agree && <ErrorText text={errors.agree} />}
 
@@ -175,7 +138,14 @@ function InputField({
   value,
   onChange,
   error,
-}: any) {
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error?: string;
+}) {
   return (
     <div>
       <label className="block mb-2 font-medium text-gray-700">{label}</label>
