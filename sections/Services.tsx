@@ -1,53 +1,70 @@
-// sections/Services.tsx
+"use client";
+
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 const services = [
   {
     title: "Anxiety & Stress Management",
     description:
-      "Learn practical tools to manage overwhelming thoughts and emotions. Dr. Blake uses evidence-based approaches to help you feel more grounded and in control.",
+      "Feel more in control with CBT and mindfulness strategies that help reduce daily stress, calm the mind, and create emotional balance.",
     image: "/anxiety.jpg",
   },
   {
     title: "Relationship Counseling",
     description:
-      "Strengthen communication, rebuild trust, and deepen emotional connection. Ideal for couples navigating conflict, distance, or life transitions.",
+      "Deepen connection, improve communication, and work through recurring conflicts with supportive, guided counseling for couples and individuals.",
     image: "/relationship.jpg",
   },
   {
     title: "Trauma Recovery",
     description:
-      "Heal from painful past experiences in a safe, supportive space. Dr. Blake integrates mindfulness and trauma-informed techniques at your pace.",
+      "Heal from past experiences in a safe and structured space that honors your pace and needs — with trauma-informed care that empowers.",
     image: "/trauma.jpg",
   },
 ];
 
 export default function Services() {
   return (
-    <section className="py-20 bg-gray-50 px-6" id="services">
+    <section className="bg-[#f8f9fa] py-24 px-6" id="services">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
-          Therapy Services
-        </h2>
+        <motion.h2
+          className="text-4xl font-bold text-center text-[#1a3b3a] mb-14"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          viewport={{ once: true }}
+        >
+          Services Offered
+        </motion.h2>
 
-        <div className="grid gap-12 md:grid-cols-3">
+        <div className="grid md:grid-cols-3 gap-10">
           {services.map((service, index) => (
-            <div
+            <motion.div
               key={index}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
+              className="bg-white rounded-3xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              viewport={{ once: true }}
             >
-              <Image
-                src={service.image}
-                alt={service.title}
-                width={600}
-                height={400}
-                className="w-full h-56 object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
-                <p className="text-gray-700 text-base">{service.description}</p>
+              <div className="relative w-full h-56">
+                <Image
+                  src={service.image}
+                  alt={service.title}
+                  fill
+                  className="object-cover"
+                />
               </div>
-            </div>
+              <div className="p-6">
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                  {service.title}
+                </h3>
+                <p className="text-gray-700 text-[1.05rem] leading-relaxed">
+                  {service.description}
+                </p>
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>
